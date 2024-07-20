@@ -20,10 +20,10 @@
       </div>
       <div class="form-group">
         <label for="cedula">Cédula:</label>
-        <input type="text" id="cedula" />
+        <input v-model="cedula" type="text" id="cedula" />
       </div>
       <div class="form-buttons">
-        <button type="button">Consultar</button>
+        <button @click="consultar" type="button">Consultar</button>
         <button type="button">Actualizar</button>
       </div>
     </form>
@@ -31,8 +31,23 @@
 </template>
 
 <script>
+import {
+  obtenerPorCedulaAxiosFachada,
+  actualizarFachada,
+} from "../clients/clienteEstudiante.js";
 export default {
-  name: 'Estudiante'
+  data() {
+    return {
+      cedula: null,
+    };
+  },
+  methods: {
+    async consultar() {
+      console.log(this.cedula);
+      const data = await obtenerPorCedulaAxiosFachada(this.cedula);
+      console.log(data);
+    },
+  },
 };
 </script>
 
