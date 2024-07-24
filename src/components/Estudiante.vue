@@ -4,19 +4,25 @@
     <form>
       <div class="form-group">
         <label for="id">ID:</label>
-        <input type="text" id="id" />
+        <input v-model="id" type="text" id="id" />
       </div>
       <div class="form-group">
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" />
+        <input v-model="nombre" type="text" id="nombre" />
       </div>
       <div class="form-group">
         <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" />
+        <input v-model="apellido" type="text" id="apellido" />
       </div>
+
+      <div class="form-group">
+        <label for="genero">Genero:</label>
+        <input v-model="genero" type="text" id="genero" />
+      </div>
+
       <div class="form-group">
         <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento" />
+        <input v-model="fechaNacimiento" type="text" id="fechaNacimiento" />
       </div>
       <div class="form-group">
         <label for="cedula">Cédula:</label>
@@ -24,7 +30,7 @@
       </div>
       <div class="form-buttons">
         <button @click="consultar" type="button">Consultar</button>
-        <button type="button">Actualizar</button>
+        <button @click="actualizar" type="button">Actualizar</button>
       </div>
     </form>
   </div>
@@ -39,6 +45,10 @@ export default {
   data() {
     return {
       cedula: null,
+      genero: null,
+      nombre: null,
+      apellido: null,
+      fechaNacimiento: null,
     };
   },
   methods: {
@@ -46,7 +56,33 @@ export default {
       console.log(this.cedula);
       const data = await obtenerPorCedulaAxiosFachada(this.cedula);
       console.log(data);
+      console.log(data.nombre);
+      console.log(data.apellido);
+      this.genero = data.genero;
+      this.nombre = data.nombre;
+      this.apellido = data.apellido;
+      this.fechaNacimiento = data.fechaNacimiento;
     },
+
+    async actualizar() {
+      //"1998-09-07T10:45:34"
+      
+      console.log(this.fechaNacimiento);
+
+      let fechaFinal = this.fechaNacimiento + "T00:00:00";
+
+      const bodyEstudiante = {
+        nombre: this.nombre,
+        apellido: this.apellido,
+        fechaNacimiento: fechaFinal,
+        genero: this.genero,
+      };
+      const data = await actualizarFachada(this.cedula, bodyEstudiante);
+      console.log(data);
+    },
+
+
+    
   },
 };
 </script>

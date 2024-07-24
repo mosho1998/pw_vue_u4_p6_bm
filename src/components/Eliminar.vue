@@ -4,16 +4,30 @@
     <form>
       <div class="form-group">
         <label for="cedula">Cédula:</label>
-        <input type="text" id="cedula" />
+        <input v-model="cedula" type="text" id="cedula" />
       </div>
       <div class="form-buttons">
-        <button type="button">Eliminar</button>
+        <button @click="eliminar" type="button">Eliminar</button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import { eliminarFachada } from "../clients/clienteEstudiante.js";
+
+export default {
+  data() {
+    return {
+      cedula: null,
+    };
+  },
+  methods: {
+    async eliminar() {
+      await eliminarFachada(this.cedula);
+    },
+  },
+};
 </script>
 
 <style scoped>

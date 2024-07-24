@@ -4,28 +4,59 @@
     <form>
       <div class="form-group">
         <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" />
+        <input v-model="nombre" type="text" id="nombre" />
       </div>
       <div class="form-group">
         <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" />
+        <input v-model="apellido" type="text" id="apellido" />
       </div>
       <div class="form-group">
         <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento" />
+        <input v-model="fechaNacimiento" type="date" id="fechaNacimiento" />
+      </div>
+      <div class="form-group">
+        <label for="genero">Genero:</label>
+        <input v-model="genero" type="text" id="genero" />
       </div>
       <div class="form-group">
         <label for="cedula">Cédula:</label>
-        <input type="text" id="cedula" />
+        <input v-model="cedula" type="text" id="cedula" />
       </div>
       <div class="form-buttons">
-        <button type="button">Guardar</button>
+        <button @click="guardar" type="button">Guardar</button>
       </div>
     </form>
   </div>
 </template>
 
 <script>
+import { guardarFachada } from "../clients/clienteEstudiante.js";
+export default {
+  data() {
+    return {
+      cedula: null,
+      genero: null,
+      nombre: null,
+      apellido: null,
+      fechaNacimiento: null,
+    };
+  },
+  methods: {
+    async guardar() {
+      let fechaFinal = this.fechaNacimiento + "T00:00:00";
+
+      const bodyEstudiante = {
+        nombre: this.nombre,
+        apellido: this.apellido,
+        fechaNacimiento: fechaFinal,
+        genero: this.genero,
+        cedula: this.cedula,
+      };
+      const data = await guardarFachada(bodyEstudiante);
+      console.log(data);
+    },
+  },
+};
 </script>
 
 <style scoped>
