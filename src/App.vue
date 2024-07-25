@@ -1,20 +1,19 @@
 <template>
-  <Estudiante/>
-  <Eliminar/>
-  <Guardar/>
+  <router-view/>
+
+
+  
 </template>
 
 <script>
-import Estudiante from './components/Estudiante.vue'
-import Eliminar from './components/Eliminar.vue'
-import Guardar from './components/Guardar.vue'
+
+
 
 export default {
   name: 'App',
   components: {
-    Estudiante,
-    Eliminar,
-    Guardar,
+
+
   }
 }
 </script>
