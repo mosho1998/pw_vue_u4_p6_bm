@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.edu.uce.pw.api.repository.modelo.Estudiante;
+import com.edu.uce.pw.api.service.to.EstudianteTO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -44,39 +45,38 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
 
 	@Override
 	public List<Estudiante> seleccionarPorGenero(String genero) {
-		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("SELECT e FROM Estudiante e WHERE e.genero = :genero", Estudiante.class);
+		TypedQuery<Estudiante> myQuery = this.entityManager
+				.createQuery("SELECT e FROM Estudiante e WHERE e.genero = :genero", Estudiante.class);
 		myQuery.setParameter("genero", genero);
 		return myQuery.getResultList();
 	}
 
 	@Override
 	public List<Estudiante> seleccionarTodosEstudiante() {
-		TypedQuery<Estudiante> myQuery = this.entityManager
-				.createQuery("SELECT e FROM Estudiante e", Estudiante.class);
+		TypedQuery<Estudiante> myQuery = this.entityManager.createQuery("SELECT e FROM Estudiante e", Estudiante.class);
 		return myQuery.getResultList();
 	}
-	
-	//CAPACIDADES PARA VUE
+
+	// CAPACIDADES PARA VUE
 
 	@Override
 	public Estudiante seleccionarPorCedula(Integer cedula) {
-		// TODO Auto-generated method stub
-		return this.entityManager.find(Estudiante.class, cedula);
+		TypedQuery<Estudiante> myQuery = this.entityManager
+				.createQuery("SELECT e from Estudiante e WHERE e.cedula =: cedula", Estudiante.class);
+		myQuery.setParameter("cedula", cedula);
+		return myQuery.getSingleResult();
 	}
 
 	@Override
 	public void actualizarPorCedula(Estudiante estudiante) {
-		// TODO Auto-generated method 
-this.entityManager.merge(estudiante);
-		
+		this.entityManager.merge(estudiante);
+
 	}
 
 	@Override
 	public void eliminarPorCedula(Integer cedula) {
 		// TODO Auto-generated method stub
-		this.entityManager.remove(cedula);
+		this.entityManager.remove(this.seleccionarPorCedula(cedula));
 	}
-
-	
 
 }

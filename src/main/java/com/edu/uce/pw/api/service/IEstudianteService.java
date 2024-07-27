@@ -26,7 +26,7 @@ public interface IEstudianteService {
 
 		EstudianteTO buscarPorCedula(Integer cedula);
 
-		void actualizarPorCedula(Estudiante estudiante);
+		void actualizarPorCedula(EstudianteTO estudiante);
 
 		void borrarPorCedula(Integer cedula);
 

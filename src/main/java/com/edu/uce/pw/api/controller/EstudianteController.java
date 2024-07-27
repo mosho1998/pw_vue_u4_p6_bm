@@ -10,6 +10,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,6 +30,8 @@ import com.edu.uce.pw.api.service.to.EstudianteTO;
 import com.edu.uce.pw.api.service.to.MateriaTO;
 
 @RestController
+//@CrossOrigin(value = "http://localhost:8081")
+@CrossOrigin
 @RequestMapping(path = "/estudiantes")
 public class EstudianteController {
 
@@ -41,20 +44,15 @@ public class EstudianteController {
 
 	// http://localhost:8080/API/v1.0/Matricula/estudiantes/guardar
 	// Nivel 1: http://localhost:8080/API/v1.0/Matricula/estudiantes
-	@PostMapping(produces = "application/json", consumes = "application/xml")
+	@PostMapping(produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Estudiante> guardar(@RequestBody Estudiante est) {
 
-		HttpHeaders cabeceraPost = new HttpHeaders();
-		cabeceraPost.add("mensaje_201", "Corresponde a la inserción de un recurso");
-		cabeceraPost.add("valor", "Estudiante insertado con éxito");
+	    HttpHeaders cabeceraPost = new HttpHeaders();
+	    cabeceraPost.add("mensaje_201", "Corresponde a la inserción de un recurso");
+	    cabeceraPost.add("valor", "Estudiante insertado con éxito");
 
-//		Estudiante est= new Estudiante();
-//		est.setNombre("Alex");
-//		est.setApellido("Andrango");
-//		est.setFechaNacimiento(LocalDateTime.of(1999,11,21,1,1));
-		this.estudianteService.guardar(est);
-		return ResponseEntity.status(201).body(est);
-
+	    this.estudianteService.guardar(est);
+	    return ResponseEntity.status(201).body(est);
 	}
 
 	// http://localhost:8080/API/v1.0/Matricula/estudiantes/actualizar
@@ -200,17 +198,13 @@ public class EstudianteController {
 	
 	
 	////////////////////////CAPACIDADES PARA VUE///////////////////////////////////
-	@PutMapping(path = "/cedula/{cedula}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_XML_VALUE)
-	public ResponseEntity<Estudiante> actualizarPorCedula(@RequestBody Estudiante est, @PathVariable Integer cedula) {
+	@PutMapping(path = "/cedula/{cedula}" ,produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void actualizar(@RequestBody EstudianteTO estudianteTO, @PathVariable Integer cedula) {
+		EstudianteTO estudianteEncontrado = this.buscarPorCedula(cedula);
 
-		est.setId(cedula);
-		this.estudianteService.actualizarPorCedula(est);
-
-		HttpHeaders cabeceraPut = new HttpHeaders();
-		cabeceraPut.add("mensaje_238", "Corresponde a la actualización de un recurso");
-		cabeceraPut.add("valor", "Estudiante actualizado");
-		return new ResponseEntity<>(est, cabeceraPut, 238);
-
+		estudianteTO.setCedula(cedula);
+		estudianteTO.setId(estudianteEncontrado.getId());
+		this.estudianteService.actualizarPorCedula(estudianteTO);
 	}
 	
 	
@@ -229,7 +223,7 @@ public class EstudianteController {
 	
 	@GetMapping(path = "/cedula/{cedula}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public EstudianteTO buscarPorCedula(@PathVariable Integer cedula) {
-		EstudianteTO est = this.estudianteService.buscarPorId(cedula);
+		EstudianteTO est = this.estudianteService.buscarPorCedula(cedula);
 
 		return est;
 	}
