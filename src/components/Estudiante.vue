@@ -66,7 +66,7 @@ export default {
 
     async actualizar() {
       //"1998-09-07T10:45:34"
-      
+
       console.log(this.fechaNacimiento);
 
       let fechaFinal = this.fechaNacimiento + "T00:00:00";
@@ -80,9 +80,14 @@ export default {
       const data = await actualizarFachada(this.cedula, bodyEstudiante);
       console.log(data);
     },
-
-
-    
+    created() {
+      console.log(this.$route);
+      console.log(this.$route.params.cedula)
+      if (this.$route.params.cedula !== "vacio") {
+        this.cedula = this.$route.params.cedula;
+        this.consultar();
+      }
+    },
   },
 };
 </script>
